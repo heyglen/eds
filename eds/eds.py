@@ -82,7 +82,7 @@ class Eds:
             if period.price < cheap:
                 period.relative_price = RelativeCost.cheap
             elif cheap <= period.price < expensive:
-                period.relative_price = RelativeCost.normal
+                period.relative_price = RelativeCost.mid_priced
             elif expensive <= period.price:
                 period.relative_price = RelativeCost.expensive
 

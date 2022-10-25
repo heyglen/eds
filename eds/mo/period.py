@@ -7,7 +7,7 @@ import click
 
 class RelativeCost(enum.Enum):
     expensive = enum.auto()
-    normal = enum.auto()
+    mid_priced = enum.auto()
     cheap = enum.auto()
     unknown = enum.auto()
 

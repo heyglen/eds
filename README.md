@@ -23,7 +23,7 @@ from eds import Session, RelativeCost, PriceArea
 
 relative_prices = (
     RelativeCost.cheap,
-    RelativeCost.normal,
+    RelativeCost.mid_priced,
     RelativeCost.expensive,
 )
 

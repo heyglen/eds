@@ -12,6 +12,6 @@ def eds():
 def relative_costs():
     return (
         RelativeCost.cheap,
-        RelativeCost.normal,
+        RelativeCost.mid_priced,
         RelativeCost.expensive,
     )

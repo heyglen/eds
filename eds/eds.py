@@ -45,7 +45,7 @@ def _build_query(
 
 
 class Eds:
-    version = "0.2.0"
+    version = "1.0.0"
 
     def __init__(
         self, session: requests.Session, price_area=PriceArea.east_of_great_belt

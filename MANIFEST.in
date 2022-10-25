@@ -1,0 +1,5 @@
+exclude *.txt
+exclude tests
+
+recursive-exclude tests *.py
+recursive-include eds *.py

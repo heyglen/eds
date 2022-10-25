@@ -2,9 +2,11 @@
 
 ## Command line interface
 
+Get Danish electricity prices for the next 24 hours
+
 ```
 eds power get
-72022.10.25
+2022.10.25
         02:00  42 øre
         03:00  42 øre
         04:00  50 øre

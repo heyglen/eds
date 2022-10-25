@@ -36,3 +36,6 @@ with Session(price_area=PriceArea.east_of_great_belt) as session:
 ## Developer Resources
 
 [API Documentation](https://www.energidataservice.dk/tso-electricity/elspotprices#metadata-info)
+
+[![Code%20Quality Pass](https://img.shields.io/badge/Code%20Quality-Pass-success?style=for-the-badge)](report/lint/index.html)
+[![Tests Pass](https://img.shields.io/badge/Tests-Pass-success?style=for-the-badge)](report/test/index.html)

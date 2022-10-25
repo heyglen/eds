@@ -1,6 +1,6 @@
 # Energy Data Service
 
-Command line interface:
+## Command line interface
 
 ```
 eds power get
@@ -12,7 +12,7 @@ eds power get
         ...
 ```
 
-API:
+## API
 
 ```python
 import datetime

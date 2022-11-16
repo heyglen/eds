@@ -1,38 +1,30 @@
 import datetime
-import enum
-from dataclasses import dataclass
-
-import click
 
 
-class RelativeCost(enum.Enum):
-    expensive = enum.auto()
-    mid_priced = enum.auto()
-    cheap = enum.auto()
-    unknown = enum.auto()
+class RelativeCost:
+    expensive = 1
+    mid_priced = 2
+    cheap = 3
+    unknown = 4
 
 
-@dataclass
 class Period:
-    when: datetime.datetime
-    price: float
-    currency = "dkk"
-    currency_unit = "øre"
-    hour_unit = "kWh"
-    relative_price = RelativeCost.unknown
+    def __init__(
+        self,
+        when: datetime.datetime,
+        price: float,
+        currency="dkk",
+        currency_unit="øre",
+        hour_unit="kWh",
+        relative_price=RelativeCost.unknown,
+    ):
+        self.when = when
+        self.price = price
+        self.currency = currency
+        self.currency_unit = currency_unit
+        self.hour_unit = hour_unit
+        self.relative_price = relative_price
 
     def __str__(self):
         when = self.when.strftime("%Y.%m.%d %H:%M")
         return f"{when} {self.price:3} {self.currency_unit}"
-
-    def click_format(self, time_only=False) -> str:
-        if time_only:
-            when = self.when.strftime("%H:%M")
-        else:
-            when = self.when.strftime("%Y.%m.%d %H:%M")
-        cost = f"{self.price:3}"
-        if self.relative_price == RelativeCost.cheap:
-            cost = click.style(f"{self.price:3}", fg="green")
-        elif self.relative_price == RelativeCost.expensive:
-            cost = click.style(f"{self.price:3}", fg="red")
-        return f"{when} {cost} {self.currency_unit}"

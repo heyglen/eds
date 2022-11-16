@@ -1,6 +1,7 @@
+import asyncio
 import functools
 import logging
-from dataclasses import dataclass
+import platform
 from typing import Callable
 
 import click
@@ -34,76 +35,40 @@ def session(fn):
             logger.addHandler(handler)
             logger.setLevel(logging.DEBUG)
 
-        with Session() as session_:
-            return fn(
-                session=session_,
-                *args,
-                **kwargs,
-            )
+        async def _run_in_session():
+            async with Session() as session_:
+                return await fn(
+                    session=session_,
+                    *args,
+                    **kwargs,
+                )
+
+        # https://bugs.python.org/issue39232
+        if platform.platform().lower().startswith("windows"):
+            asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+        return asyncio.run(_run_in_session())
 
     return functools.update_wrapper(session_decorator, fn)
 
 
-@dataclass
 class _Argument:
-    active: Callable = click.argument("active")
-    session: Callable = session
-    authentication_domain: Callable = click.argument("authentication-domain")
-    checksum: Callable = click.argument("checksum")
-    command: Callable = click.argument("command")
-    destination: Callable = click.argument("destination", type=click.Path(exists=True))
-    domain: Callable = click.argument("domain")
-    file: Callable = click.argument(
-        "file", type=click.Path(exists=True, dir_okay=False, readable=True)
-    )
-    script: Callable = click.argument(
-        "script", type=click.Path(exists=True, dir_okay=False, readable=True)
-    )
-    file_name: Callable = click.argument("file-name")
-    host: Callable = click.argument("host")
-    hostname: Callable = click.argument("hostname")
-    hostnames: Callable = click.argument("hostnames", nargs=-1)
-    ip: Callable = click.argument("ip")
-    name: Callable = click.argument("name")
-    password: Callable = click.argument("password")
-    port: Callable = click.argument("port")
-    source: Callable = click.argument("source", type=click.Path(exists=True))
-    software: Callable = click.argument("software", type=click.Path())
-    standby: Callable = click.argument("standby")
-    sha512_checksum: Callable = click.argument("sha512-checksum")
-    user: Callable = click.argument("user")
-    username: Callable = click.argument("username")
+    def __init__(self):
+        self.session: Callable = session
 
 
 argument = _Argument()
 
 
-@dataclass
 class _Option:
-    debug: Callable = click.option("-d", "--debug", help="Debug", count=True)
-    domain: Callable = click.option(
-        "--domain",
-        default="ad.noc.nnit.com",
-        show_default=True,
-        help="Authentication domain",
-    )
-    repeat: Callable = click.option("--repeat", type=int)
-    vrf: Callable = click.option("--vrf")
-    interface: Callable = click.option("--interface")
-    drive: Callable = click.option("--drive", default="flash", show_default=True)
-    with_hostname: Callable = click.option(
-        "--with-hostname",
-        is_flag=True,
-        default=False,
-        help="Print the hostname with the output",
-    )
-    verbose: Callable = click.option("-v", "--verbose", is_flag=True, default=False)
-    password: Callable = click.option("--password", is_flag=True, default=False)
-    version: Callable = click.option("-V", "--version", is_flag=True, default=False)
-    sha512_checksum: Callable = click.option("--sha512-checksum")
-    username: Callable = click.option(
-        "--username", help="Will default to the user in the users OpenSSH configuration"
-    )
+    def __init__(self):
+        self.debug: Callable = click.option("-d", "--debug", help="Debug", count=True)
+        self.verbose: Callable = click.option(
+            "-v", "--verbose", is_flag=True, default=False
+        )
+        self.version: Callable = click.option(
+            "-V", "--version", is_flag=True, default=False
+        )
 
 
 option = _Option()

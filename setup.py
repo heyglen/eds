@@ -10,7 +10,7 @@ requirements = [
     "rich",
     "click",
     "colorlog",
-    "requests",
+    "aiohttp",
 ]
 
 
@@ -20,7 +20,7 @@ test_requirements: List[str] = []
 
 setup(
     name="eds",
-    version="1.0.0",
+    version="0.1.0",
     description="Energy Data Service",
     long_description=readme,
     author="Glen Harmon",

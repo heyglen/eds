@@ -3,8 +3,8 @@ from eds import RelativeCost, Session
 
 
 @pytest.fixture
-def eds():
-    with Session() as session:
+async def eds():
+    async with Session() as session:
         yield session
 
 
